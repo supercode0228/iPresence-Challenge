@@ -11,6 +11,7 @@ class ChatPage extends Component {
     super()
     this.state = {
       messages: [],
+      unread: 0,
     }
   }
 
@@ -20,7 +21,13 @@ class ChatPage extends Component {
     const { messagesActions } = this.props
     messagesActions.fetchMessagesRequest().then(() => {
       const { messages } = this.props
-      this.setState({ messages: messages.data }, () => this.scrollToBottom())
+      this.setState(
+        {
+          messages: [...messages.data.messages, ...this.state.messages],
+          unread: messages.data.unread,
+        },
+        () => this.scrollToBottom(),
+      )
     })
   }
 
@@ -33,19 +40,19 @@ class ChatPage extends Component {
   }
 
   render() {
-    const { messages } = this.state
+    const { messages, unread } = this.state
     return (
       <div className="chat-room">
         <div className="chat-room__message">
           <div className="chat-room__message__header">
-            <h4>Chat Room</h4>
+            <h6>User101 ({unread} new messages)</h6>
           </div>
           <div className="chat-room__message__body">
             <div className="chat-room__message__body__content">
-              {/* {!isEmpty(messages) &&
+              {!isEmpty(messages) &&
                 messages.map((message) => {
                   return <MessageItem data={message} key={message.id} />
-                })} */}
+                })}
               <div ref={this.messagesEndRef} />
             </div>
             <MessageInput onSendMsg={this.onSendMsg} />

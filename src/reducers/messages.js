@@ -16,9 +16,13 @@ export function fetchMessagesReducer(state = initialState.messages, action) {
         loading: true,
       })
     case FETCH_MESSAGES_SUCCESS:
+      let unread = 0
+      messages.forEach((item) => {
+        if (item.direction === 'in' && item.status === 'received') unread += 1
+      })
       return Object.assign({}, state, {
         loading: false,
-        data: messages,
+        data: { messages, unread },
       })
     case FETCH_MESSAGES_ERROR:
       return Object.assign({}, state, {

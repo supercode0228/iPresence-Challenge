@@ -1,17 +1,38 @@
-import React from 'react';
+import React from 'react'
+import { formatCarbonDate } from '../../utils/helpers'
 
 const MessageItem = ({ data }) => {
-	return (
-		<div className="chat-room__message__item">
-			<div className="chat-room__message__item__username">
-				<span><strong>{data.sender.name}</strong></span>
-				<span>{data.created_at}</span>
-			</div>
-			<div className="chat-room__message__item__content">
-				<span>{data.content}</span>
-			</div>
-		</div>
-	)
+  const date = formatCarbonDate(parseInt(data.timestamp))
+  const time = date.split(' ')[1]
+  return (
+    <div
+      className={`chat-room__message__item ${
+        data.direction === 'out' ? 'justify-content-end ml-5' : 'mr-5'
+      }`}
+    >
+      <div className="chat-room__message__item__content">
+        <div className="chat-room__message__item__text">
+          <span>
+            <strong>{data.text}</strong>
+          </span>
+        </div>
+        <div className="chat-room__message__item__status">
+          <span className="time">{time}</span>
+          {data.direction === 'out' && (
+            <span className="icon">
+              {data.status === 'sent' ? (
+                <i className="fa fa-check icon__sent" />
+              ) : data.status === 'received' ? (
+                <i className="fa fa-check-double icon__received" />
+              ) : (
+                <i className="fa fa-check-double icon__read" />
+              )}
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export default MessageItem;
+export default MessageItem

@@ -16,6 +16,7 @@ body, html {
   justify-content: center;
   height: 100%; }
   .chat-room__message {
+    position: relative;
     margin: 10px 0;
     max-width: 414px;
     min-width: 300px;
@@ -42,6 +43,15 @@ body, html {
       @media only screen and (max-width: 568px) {
         .chat-room__message__body {
           height: calc(100% - 122px); } }
+    .chat-room__message__updating {
+      background-color: #0084ff;
+      color: white;
+      padding: 5px 15px;
+      width: fit-content;
+      border-radius: 20px;
+      position: absolute;
+      margin-top: 5px;
+      left: 25%; }
     .chat-room__message__type {
       min-width: 300px;
       max-width: 414px;

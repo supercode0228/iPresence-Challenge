@@ -12,21 +12,40 @@ class ChatPage extends Component {
     this.state = {
       messages: [],
       unread: 0,
+      page: 0,
+      isUpdating: false,
     }
   }
 
   messagesEndRef = React.createRef()
 
   componentDidMount() {
+    this.__setMessageData()
+    const message__container = document.querySelector(
+      '.chat-room__message__body',
+    )
+    message__container.addEventListener('scroll', () => {
+      if (message__container.scrollTop === 0) {
+        this.__setMessageData(message__container.scrollHeight)
+      }
+    })
+  }
+
+  __setMessageData = (oldHeight) => {
     const { messagesActions } = this.props
-    messagesActions.fetchMessagesRequest().then(() => {
+    const { page } = this.state
+    this.setState({ isUpdating: true })
+    messagesActions.fetchMessagesRequest(page + 1).then(() => {
       const { messages } = this.props
       this.setState(
         {
           messages: [...messages.data.messages, ...this.state.messages],
           unread: messages.data.unread,
+          page: page + 1,
+          isUpdating: false,
         },
-        () => this.scrollToBottom(),
+        () =>
+          page === 0 ? this.scrollToBottom() : this.scrollToOffset(oldHeight),
       )
     })
   }
@@ -39,14 +58,30 @@ class ChatPage extends Component {
     this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
   }
 
+  scrollToOffset = (oldHeight = 0) => {
+    const message__container = document.querySelector(
+      '.chat-room__message__body',
+    )
+    const offset = message__container.scrollHeight - oldHeight
+    console.log('oldHeight', oldHeight)
+    console.log('scrollHeight', message__container.scrollHeight)
+    console.log('offset', offset)
+    message__container.scrollTop = offset
+  }
+
   render() {
-    const { messages, unread } = this.state
+    const { messages, unread, isUpdating } = this.state
     return (
       <div className="chat-room">
         <div className="chat-room__message">
           <div className="chat-room__message__header">
             <h6>User101 ({unread} new messages)</h6>
           </div>
+          {isUpdating && (
+            <div className="chat-room__message__updating">
+              Updating conversations...
+            </div>
+          )}
           <div className="chat-room__message__body">
             <div className="chat-room__message__body__content">
               {!isEmpty(messages) &&

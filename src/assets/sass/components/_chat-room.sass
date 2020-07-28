@@ -3,6 +3,7 @@
 	justify-content: center
 	height: 100%
 	&__message
+		position: relative
 		margin: 10px 0
 		max-width: 414px
 		min-width: 300px
@@ -27,6 +28,15 @@
 			overflow: auto
 			+r($mobile)
 				height: calc(100% - 122px)
+		&__updating
+			background-color: $colorBlue1
+			color: white
+			padding: 5px 15px
+			width: fit-content
+			border-radius: 20px
+			position: absolute
+			margin-top: 5px
+			left: 25%
 		&__type
 			min-width: 300px
 			max-width: 414px

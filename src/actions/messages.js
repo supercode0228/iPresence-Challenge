@@ -9,7 +9,7 @@ import {
 
 import { CALL_API } from '../middlewares/api'
 
-export const fetchMessagesRequest = () => {
+export const fetchMessagesRequest = (pageNo = 1) => {
   return {
     [CALL_API]: {
       types: [
@@ -17,6 +17,7 @@ export const fetchMessagesRequest = () => {
         FETCH_MESSAGES_SUCCESS,
         FETCH_MESSAGES_ERROR,
       ],
+      pageNo,
     },
   }
 }

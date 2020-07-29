@@ -23,12 +23,12 @@ export function fetchMessagesReducer(state = initialState.messages, action) {
       const result = messages.slice(start, end)
       let unread = 0
       messages.forEach((item) => {
-        if (item.direction === 'in' && item.status === 'received') unread += 1
+        if (item.direction === 'in' && item.status === 'received') unread++
       })
 
       return Object.assign({}, state, {
         loading: false,
-        data: { messages: result, unread },
+        data: { messages: result, unread, total },
       })
     case FETCH_MESSAGES_ERROR:
       return Object.assign({}, state, {

@@ -6,6 +6,7 @@ const MessageItem = ({ data }) => {
   const time = date.split(' ')[1]
   return (
     <div
+      id={`message-${data.id}`}
       className={`chat-room__message__item ${
         data.direction === 'out' ? 'justify-content-end ml-5' : 'mr-5'
       }`}

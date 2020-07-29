@@ -50,8 +50,24 @@ class ChatPage extends Component {
     })
   }
 
-  onSendMsg = (e, message) => {
+  onSendMsg = (e, content) => {
     e.preventDefault()
+    const { messagesActions } = this.props
+    const { messages } = this.state
+    const newId = parseInt(messages[messages.length - 1].id) + 1
+    const params = {
+      id: newId,
+      direction: 'out',
+      status: 'sent',
+      timestamp: Date.now().valueOf(),
+      text: content,
+    }
+    messagesActions.postMessageRequest(params).then(() => {
+      const { message } = this.props
+      this.setState({ messages: [...this.state.messages, message.data] }, () =>
+        this.scrollToBottom(),
+      )
+    })
   }
 
   scrollToBottom = () => {
@@ -63,9 +79,6 @@ class ChatPage extends Component {
       '.chat-room__message__body',
     )
     const offset = message__container.scrollHeight - oldHeight
-    console.log('oldHeight', oldHeight)
-    console.log('scrollHeight', message__container.scrollHeight)
-    console.log('offset', offset)
     message__container.scrollTop = offset
   }
 

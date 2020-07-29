@@ -63,7 +63,6 @@ class ChatPage extends Component {
         const element = document.getElementById(`message-${item.id}`)
         const isView = this.isScrolledIntoView(element)
         if (isView) {
-          console.log(item.id)
           item.status = 'read'
           unreadCnt--
         }

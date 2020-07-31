@@ -153,7 +153,7 @@ class ChatPage extends Component {
                   const datetime = formatCarbonDate(parseInt(message.timestamp))
                   const date = datetime.split(' ')[0]
                   return (
-                    <React.Fragment>
+                    <React.Fragment key={message.id}>
                       {prev__date !== date && (
                         <div className="chat-room__message__date">
                           <div className="outline" />

@@ -13,14 +13,16 @@ const MessageItem = ({ data }) => {
     >
       <div className="chat-room__message__item__content">
         <div className="chat-room__message__item__text">
-          <span>
+          <span data-testid="text">
             <strong>{data.text}</strong>
           </span>
         </div>
         <div className="chat-room__message__item__status">
-          <span className="time">{time}</span>
+          <span data-testid="time" className="time">
+            {time}
+          </span>
           {data.direction === 'out' && (
-            <span className="icon">
+            <span data-testid="status" className="icon">
               {data.status === 'sent' ? (
                 <i className="fa fa-check icon__sent" />
               ) : data.status === 'received' ? (

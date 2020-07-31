@@ -6,6 +6,8 @@ import { isEmpty } from 'lodash'
 import { MessageInput, MessageItem } from '../components/ChatRoom'
 import { messagesActions } from '../actions'
 
+import { formatCarbonDate } from '../utils/helpers'
+
 class ChatPage extends Component {
   constructor() {
     super()
@@ -141,8 +143,27 @@ class ChatPage extends Component {
           <div className="chat-room__message__body">
             <div className="chat-room__message__body__content">
               {!isEmpty(messages) &&
-                messages.map((message) => {
-                  return <MessageItem data={message} key={message.id} />
+                messages.map((message, index) => {
+                  const prev__datetime = formatCarbonDate(
+                    parseInt(
+                      index === 0 ? message : messages[index - 1].timestamp,
+                    ),
+                  )
+                  const prev__date = prev__datetime.split(' ')[0]
+                  const datetime = formatCarbonDate(parseInt(message.timestamp))
+                  const date = datetime.split(' ')[0]
+                  return (
+                    <React.Fragment>
+                      {prev__date !== date && (
+                        <div className="chat-room__message__date">
+                          <div className="outline" />
+                          <span className="text">{date}</span>
+                          <div className="outline" />
+                        </div>
+                      )}
+                      <MessageItem data={message} key={message.id} />
+                    </React.Fragment>
+                  )
                 })}
               <div ref={this.messagesEndRef} />
             </div>
